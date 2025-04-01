@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 0; }
+        nav { background: #333; padding: 10px; }
+        nav a { color: white; text-decoration: none; margin: 10px; }
+        nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Startseite</a>
+        <a href="ueber-uns.html">Über uns</a>
+        <a href="kontakt.html">Kontakt</a>
+    </nav>
+    
+    <h1>Kontakt</h1>
+    <p>Hier finden Sie unsere Kontaktdaten:</p>
+    <p>Adresse: Musterstraße 1, 12345 Musterstadt</p>
+    <p>Telefon: 01234-56789</p>
+    <p>Email: info@example.com</p>
+    
+    <h2>Kontaktformular</h2>
+    <p>Schreiben Sie uns eine Nachricht, und wir melden uns so schnell wie möglich bei Ihnen.</p>
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="email">E-Mail:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="message">Nachricht:</label><br>
+        <textarea id="message" name="message" rows="4" required></textarea><br><br>
+        
+        <input type="submit" value="Senden">
+    </form>
+</body>
+</html>

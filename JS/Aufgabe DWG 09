@@ -1,0 +1,84 @@
+<!-- Aufgabe 1-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerade Zahlen</title>
+</head>
+<body>
+    <script>
+        function isEven(number) {
+            return number % 2 === 0;
+        }
+        
+        for (let i = 1; i <= 100; i++) {
+            if (isEven(i)) {
+                console.log(i);
+            }
+        }
+    </script>
+</body>
+</html>
+
+<!-- Aufgabe 2-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buch-Klasse</title>
+</head>
+<body>
+    <script>
+        class Book {
+            constructor(title, author, pages) {
+                this.title = title;
+                this.author = author;
+                this.pages = pages;
+            }
+            getDescription() {
+                return `Das Buch '${this.title}' von '${this.author}' hat ${this.pages} Seiten.`;
+            }
+        }
+        
+        const book1 = new Book("1984", "George Orwell", 328);
+        const book2 = new Book("Der kleine Prinz", "Antoine de Saint-Exupéry", 96);
+        
+        console.log(book1.getDescription());
+        console.log(book2.getDescription());
+    </script>
+</body>
+</html>
+
+<!-- Aufgabe 3 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Button-Klick-Zähler</title>
+</head>
+<body>
+    <button id="clickButton">Klick mich!</button>
+    <script>
+        let count = 0;
+        document.getElementById("clickButton").addEventListener("click", function() {
+            count++;
+            console.log(`Button wurde ${count} mal geklickt`);
+        });
+    </script>
+</body>
+</html>
+
+<!-- Aufgabe 4 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aktuelle Zeit</title>
+</head>
+<body>
+    <button id="timeButton">Aktuelle Zeit</button>
+    <p id="timeDisplay"></p>
+    <script>
+        document.getElementById("timeButton").addEventListener("click", function() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById("timeDisplay").innerText = `Aktuelle Uhrzeit: ${now}`;
+        });
+    </script>
+</body>
+</html>

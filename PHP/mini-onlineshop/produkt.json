@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "name": "Fruchtbonbons",
+        "price": 3.99,
+        "description": "Die sind extra lecker.",
+        "image": "images/fruchtbonbons.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Zahncreme",
+        "price": 12.99,
+        "description": "Immer wieder erfrischend.",
+        "image": "images/zahncreme.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Schokolade",
+        "price": 5.99,
+        "description": "Die beste Schokolade der Welt.",
+        "image": "images/schokolade.jpg"
+    },
+    {
+        "id": 4,
+        "name": "Kekse",
+        "price": 4.49,
+        "description": "Knusprige Kekse für jeden Anlass.",
+        "image": "images/kekse.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Energy-Drink",
+        "price": 2.99,
+        "description": "Perfekt für einen Energieschub.",
+        "image": "images/energy-drink.jpg"
+    }
+]

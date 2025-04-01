@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript</title>
+    <script type="text/javascript">
+        // Variablendeklartion mit var -- ALT - NICHT BENUTZEN
+        var x = 10;
+        console.log(x); // Ausgabe: 10
+        if (true) {
+            var x = "b"; // Neu zugewiesen innerhalb eines Blocks
+        }
+        console.log(x); // Ausgabe: 20
+ 
+        // Variablendeklartion mit let - Neue Zuweisung möglich
+        let y = 10;
+        console.log(y); // Ausgabe: 10
+ 
+        if (true) {
+            let y = 'Y in if'; // Blockscope: nur innerhalb dieses Blocks gültig
+            console.log(y); // Ausgabe: 20
+        }
+        console.log(y); // Ausgabe: 10
+ 
+        // Variablendeklartion mit const - Keine neue Zuweisung möglich
+        const z = 30;
+        console.log(z); // Ausgabe: 30
+ 
+        const person = {"name": "Alice", "age": 31};
+        console.log(person);
+        person.name = "Bob";
+        console.log(person);
+ 
+    </script>
+</head>
+<body>
+    <h1>JavaScript Test-Seite</h1>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Event</title>
+</head>
+<body>
+    <button id="button">Klick mich</button>
+    <p id="counter">Anzahl Klicks: 0</p>
+    
+    <script>
+        let count = 0;
+        document.getElementById("button").addEventListener("click", () => {
+            count++;
+            document.getElementById("counter").textContent = "Anzahl Klicks: " + count;
+            console.log("Button wurde geklickt. Anzahl Klicks: " + count);
+        });
+    </script>
+</body>
+</html>

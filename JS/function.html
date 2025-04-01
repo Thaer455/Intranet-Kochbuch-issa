@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript</title>
+    <script type="text/javascript">
+ 
+function Person(name) {
+    this.name = name;
+ 
+    // Herkömmliche Funktion (ändert den `this`-Kontext)
+    this.sayHello = function() {
+        setTimeout(function() {
+            console.log("Hallo, mein Name ist " + this.name); // `this` ist hier undefined
+        }, 1000);
+    };
+ 
+    // Arrow-Funktion (behält den `this`-Kontext)
+    this.sayHelloArrow = function() {
+        setTimeout(() => {
+            console.log("Hallo, mein Name ist " + this.name); // `this` verweist auf das Person-Objekt
+        }, 1000);
+    };
+}
+ 
+let person1 = new Person("Alice");
+console.log(person1);
+person1.sayHello(); // Ausgabe: Hallo, mein Name ist undefined (falscher `this`-Kontext)
+person1.sayHelloArrow(); // Ausgabe: Hallo, mein Name ist Alice (korrekter `this`-Kontext)
+ 
+ 
+    </script>
+</head>
+<body>
+    <h1>JavaScript Test-Seite</h1>
+</body>
+ 
+<script type="text/javascript">
+ 
+</script>
+ 
+</html>
+ 
