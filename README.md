@@ -1,1 +1,0 @@
-# bootstrap-exampel-issa

@@ -1,0 +1,67 @@
+/* Ganze Seite füllen */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Abschnitt zentrieren */
+.resume-section {
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+/* Überschrift */
+.resume-section h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+/* Formular Abstand */
+#todo-form,
+#todo-update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ToDo Liste */
+#todo-list .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Buttons in der Liste */
+#todo-list .btn {
+    margin-left: 10px;
+}
+
+/* Durchgestrichen */
+.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+/* Responsiv */
+@media (max-width: 600px) {
+    .resume-section {
+        padding: 20px;
+        border-radius: 8px;
+    }
+}
