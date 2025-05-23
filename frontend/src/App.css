@@ -1,42 +1,170 @@
-#root {
-  max-width: 1280px;
+/* src/app.css - Blaue Variante */
+
+/* Container für alle Seiten */
+.container {
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Kartenlayout */
+.card {
+  background-color: #ffffff;
+  border-radius: 10px;
   padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1); /* Blaues Hover-Light */
+}
+
+/* Texte */
+.read-the-docs {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #1e40af; /* Dunkleres Blau */
+  margin-bottom: 1rem;
+}
+
+p {
+  color: #374151;
+}
+
+/* Buttons */
+button,
+input[type="submit"],
+input[type="button"],
+a.button {
+  background-color: #3b82f6; /* Blau als Akzentfarbe */
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+a.button:hover {
+  background-color: #2563eb; /* Dunkleres Blau beim Hover */
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  color: #1f2937;
+  transition: border-color 0.3s ease;
+}
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+/* Links */
+a {
+  color: #3b82f6;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #2563eb;
+}
+
+/* Rezeptkarten */
+.recipe-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.recipe-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
+}
+
+.recipe-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.recipe-card h3 {
+  font-size: 1.25rem;
+  margin: 1rem 0 0.5rem;
+  color: #1e40af;
+}
+
+.recipe-card p {
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.recipe-card .meta {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Fehlermeldung */
+.text-red-500 {
+  color: #ef4444;
+}
+.text-green-500 {
+  color: #10b981;
+}
+.text-blue-500 {
+  color: #3b82f6;
+}
+
+/* Abstandshalter */
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.pt-4 {
+  padding-top: 1rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+/* Zentrierung */
+.text-center {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+/* Footer */
+footer {
+  margin-top: 3rem;
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
 }
