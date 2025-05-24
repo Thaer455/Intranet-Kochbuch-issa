@@ -145,7 +145,7 @@ export default function CreateRecipe() {
             id="image"
             type="text"
             value={image}
-            onChange={(e) => (e.target.value)}
+            onChange={(e) => setImage(e.target.value)}
             placeholder="public/images/placeholder.jpg" 
             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
@@ -163,4 +163,4 @@ export default function CreateRecipe() {
       </form>
     </div>
   );
-}setImage
+}
