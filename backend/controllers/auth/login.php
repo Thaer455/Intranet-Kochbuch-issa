@@ -17,7 +17,7 @@ $user = $userModel->getByEmail($data['email']);
 
 if($user && password_verify($data['password'],$user['password_hash'])) {
 
-    $secret_key = "dein_geheimer_schlüssel_1223!";
+    $secret_key = "dein_geheimer_schlüssel_123!";
     $payload = [
         'exp' => strtotime('+1 hour'),
         'data' => [
