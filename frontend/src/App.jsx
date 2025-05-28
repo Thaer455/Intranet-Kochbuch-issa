@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import './App.css';
 import './index.css';
@@ -14,9 +13,17 @@ import RecipeDetail from './pages/Recipes/RecipeDetail';
 import CreateRecipe from './pages/Recipes/CreateRecipe';
 import Profile from './pages/Profile';
 
+// Komponenten
+import ProtectedRoute from './components/ProtectedRoute'; // ✅ Wird jetzt hier eingebunden
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+  future={{
+    v7_startTransition: true,
+    v7_relativeSplatPath: true
+  }}
+>
       <>
         {/* Navigation */}
         <Navbar expand="lg" className="bg-body-tertiary fixed-top">
@@ -30,6 +37,8 @@ export default function App() {
                 <Nav.Link as={Link} to="/register">Registrieren</Nav.Link>
                 <Nav.Link as={Link} to="/login">Login</Nav.Link>
                 <Nav.Link as={Link} to="/profile">Profil</Nav.Link>
+
+                {/* Nur eingeloggte Nutzer können hier klicken */}
                 <Nav.Link as={Link} to="/create-recipe">Rezept erstellen</Nav.Link>
               </Nav>
             </Navbar.Collapse>
@@ -44,8 +53,20 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/recipes" element={<RecipeList />} />
             <Route path="/recipes/:id" element={<RecipeDetail />} />
-            <Route path="/create-recipe" element={<CreateRecipe />} />
+
+            {/* Geschützte Route */}
+            <Route 
+              path="/create-recipe" 
+              element={
+                <ProtectedRoute>
+                  <CreateRecipe />
+                </ProtectedRoute>
+              } 
+            />
+
             <Route path="/profile" element={<Profile />} />
+
+            {/* Fallback für unbekannte Pfade */}
             <Route path="*" element={
               <div className="text-center py-10">
                 <h2>Seite nicht gefunden</h2>
@@ -61,5 +82,6 @@ export default function App() {
         </footer>
       </>
     </BrowserRouter>
-  );
+  )
+  ;
 }
