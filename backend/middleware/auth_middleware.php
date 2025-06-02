@@ -1,7 +1,5 @@
 <?php
-// middleware/auth_middleware.php
-
-require_once '../vendor/autoload.php'; // Pfad zu 'vendor/firebase/php-jwt/src/JWT.php'
+require_once '../vendor/autoload.php'; 
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

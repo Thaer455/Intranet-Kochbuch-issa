@@ -1,35 +1,32 @@
-// src/pages/Login/Login.jsx
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { login, storeUserData } from '../services/auth.service';
 
 export default function Login({ setIsLoggedIn, setUsername }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-        email,
-        password
-      });
+      const data = await login(email, password);
 
-      if (response.data.success) {
+      if (data.success) {
         // Token + Benutzerdaten speichern
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        
+        storeUserData(data.token, data.user);
+
         // Zustand aktualisieren
         setIsLoggedIn(true);
-        setUsername(response.data.user.name || response.data.user.email);
+        setUsername(data.user.name || data.user.email);
 
         // Weiterleitung
-        window.location.href = '/';
+        navigate('/');
       }
-    } catch (error) {
-      console.error('Login fehlgeschlagen:', error.response?.data || error.message);
-      alert('Anmeldung fehlgeschlagen. Überprüfe deine Anmeldedaten.');
+    } catch (err) {
+      console.error('Anmeldung fehlgeschlagen:', err.response?.data || err.message);
+      alert('Fehler bei der Anmeldung. Überprüfe deine Eingaben.');
     }
   };
 

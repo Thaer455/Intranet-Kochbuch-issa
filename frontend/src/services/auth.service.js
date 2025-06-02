@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; // z.B. "http://localhost/Intranet-Kochbuch-issa/backend"
 
-// Axios-Instanz mit Basis-URL erstellen
 const apiClient = axios.create({
-  baseURL: `${API_URL}`,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -13,6 +12,7 @@ const apiClient = axios.create({
 // Nutzer registrieren
 export const register = async (email, password, name) => {
   try {
+    // Pfad anpassen auf den echten PHP-Endpunkt
     const response = await apiClient.post('/api/auth/register', { email, password, name });
     return response.data;
   } catch (error) {
@@ -45,14 +45,8 @@ export const removeToken = () => {
 };
 
 // Token prüfen
-export const getToken = () => {
-  return localStorage.getItem('token');
-};
+export const getToken = () => localStorage.getItem('token');
 
-export const isLoggedIn = () => {
-  return !!getToken();
-};
+export const isLoggedIn = () => !!getToken();
 
-export const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
-};
+export const getCurrentUser = () => JSON.parse(localStorage.getItem('user'));

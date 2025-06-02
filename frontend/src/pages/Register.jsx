@@ -1,11 +1,12 @@
-// src/pages/Register/Register.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { register } from '../services/auth.service';
 
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ export default function Register() {
     return password.length >= 8 && hasUpperCase && hasNumber && hasSpecialChar;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validatePassword(password)) {
@@ -29,11 +30,16 @@ export default function Register() {
       return;
     }
 
-    // Simuliere Registrierung – später durch API ersetzen
-    console.log('Registriert:', { email });
+    try {
+      const res = await register(email, password, name || email.split('@')[0]);
 
-    // Weiterleitung zur Login-Seite
-    navigate('/login');
+      if (res.message === 'Erfolgreich registriert') {
+        navigate('/login');
+      }
+    } catch (err) {
+      console.error('Fehler beim Registrieren:', err.response?.data || err.message);
+      setError('Fehler bei der Registrierung – prüfe deine Eingabe oder melde dich später erneut an.');
+    }
   };
 
   return (
@@ -43,54 +49,71 @@ export default function Register() {
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Name */}
         <div>
-          <label className="block text-gray-700 mb-1" htmlFor="email">
-            E-Mail-Adresse
-          </label>
+          <label htmlFor="name" className="block text-gray-700 mb-1">Benutzername</label>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-amber-500"
+            placeholder="Max.Mustermann"
+          />
+          <small className="text-gray-500 mt-1 block">
+            Dein Name wird angezeigt – z. B. „Max.Mustermann“
+          </small>
+        </div>
+        
+        {/* E-Mail */}
+        <div>
+          <label htmlFor="email" className="block text-gray-700 mb-1">E-Mail-Adresse</label>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-amber-500"
             placeholder="deine@email.de"
           />
         </div>
 
+
+
+        {/* Passwort */}
         <div>
-          <label className="block text-gray-700 mb-1" htmlFor="password">
-            Passwort
-          </label>
+          <label htmlFor="password" className="block text-gray-700 mb-1">Passwort</label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-amber-500"
             placeholder="••••••••"
           />
         </div>
 
+        {/* Passwort bestätigen */}
         <div>
-          <label className="block text-gray-700 mb-1" htmlFor="confirmPassword">
-            Passwort bestätigen
-          </label>
+          <label htmlFor="confirmPassword" className="block text-gray-700 mb-1">Passwort bestätigen</label>
           <input
             id="confirmPassword"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-amber-500"
             placeholder="••••••••"
           />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-md transition"
+          className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded transition"
         >
           Registrieren
         </button>
