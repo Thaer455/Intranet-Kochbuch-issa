@@ -1,40 +1,64 @@
 <?php
-// backend/index.php
+require_once __DIR__ . '/vendor/autoload.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+
+header("Access-Control-Allow-Origin: *"); // Für Entwicklung
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// OPTIONS-Anfrage sofort beantworten
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 switch ($request) {
-    case '/backend/api/auth/register':
-        require_once 'controllers/auth/register.php';
+    // Authentifizierung
+    case '/api/auth/register':
+        require_once __DIR__ . '/controllers/auth/register.php';
         break;
-    case '/backend/api/auth/login':
-        require_once 'controllers/auth/login.php';
+
+    case '/api/auth/login':
+        require_once __DIR__ . '/controllers/auth/login.php';
         break;
-    case '/backend/api/recipes':
+
+    // Rezepte
+    case '/api/recipes':
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            require_once 'controllers/recipe/read.php';
+            require_once __DIR__ . '/controllers/recipe/read.php';
         } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require_once 'controllers/recipe/create.php';
+            require_once __DIR__ . '/controllers/recipe/create.php';
         } else {
             http_response_code(405);
             echo json_encode(['error' => 'Methode nicht erlaubt']);
         }
         break;
-    case preg_match('/^\/backend\/api\/recipes\/(\d+)$/', $request, $matches) ? true : false:
+
+    // Rezept-ID mit Zahl erkennen
+    case preg_match('#^/api/recipes/(\d+)$#', $request, $matches) ? true : false:
+        $_GET['id'] = $matches[1];
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            require_once 'controllers/recipe/read.php?id=' . $matches[1];
+            require_once __DIR__ . "/controllers/recipe/read.php";
         } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-            require_once 'controllers/recipe/update.php?id=' . $matches[1];
+            require_once __DIR__ . "/controllers/recipe/update.php";
         } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-            require_once 'controllers/recipe/delete.php?id=' . $matches[1];
+            require_once __DIR__ . "/controllers/recipe/delete.php";
         } else {
             http_response_code(405);
             echo json_encode(['error' => 'Methode nicht erlaubt']);
         }
         break;
+
+    // Fallback
     default:
         header("HTTP/1.1 404 Not Found");
         echo json_encode(['error' => 'Route nicht gefunden']);
-        break;
 }
-?>

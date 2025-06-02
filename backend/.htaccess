@@ -1,5 +1,4 @@
-# backend/.htaccess
-
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^api/(.*)$ index.php [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ /backend/index.php [QSA,L]
