@@ -32,6 +32,8 @@ export const login = async (email, password) => {
   }
 };
 
+
+
 // Token speichern
 export const storeUserData = (token, user) => {
   localStorage.setItem('token', token);

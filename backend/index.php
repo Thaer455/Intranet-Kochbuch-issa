@@ -29,6 +29,11 @@ switch ($request) {
         require_once __DIR__ . '/controllers/auth/login.php';
         break;
 
+
+    case '/api/user/profile':
+        require_once __DIR__ . '/controllers/user/profile.php';
+        break;
+
     // Rezepte
     case '/api/recipes':
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
