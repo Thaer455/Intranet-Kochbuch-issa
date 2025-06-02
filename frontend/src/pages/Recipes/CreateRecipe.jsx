@@ -1,5 +1,5 @@
-// src/pages/Recipes/CreateRecipe.jsx
 import React, { useState } from 'react';
+import { createRecipe } from '../../services/recipe.service';
 
 export default function CreateRecipe() {
   const [title, setTitle] = useState('');
@@ -7,43 +7,76 @@ export default function CreateRecipe() {
   const [instructions, setInstructions] = useState('');
   const [time, setTime] = useState(30);
   const [difficulty, setDifficulty] = useState('mittel');
-  const [image, setImage] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    if (!file) {
+      setImagePreview('');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result); // Base64 Vorschau
+    };
+    reader.readAsDataURL(file);
+    setImageUrl(''); // URL löschen, wenn Datei gewählt wurde
+  };
+
+  const handleImageUrlChange = (e) => {
+    setImageUrl(e.target.value);
+    setImageFile(null);
+    setImagePreview('');
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!title.trim()) {
       setError('Bitte gib einen Titel für dein Rezept ein.');
       return;
     }
-
     if (!ingredients.trim()) {
       setError('Bitte füge eine Zutatenliste hinzu.');
       return;
     }
-
     if (!instructions.trim()) {
       setError('Bitte beschreibe die Zubereitungsschritte.');
       return;
     }
 
-    // Simuliere Rezept speichern
-    const newRecipe = {
-      id: Date.now(),
-      title,
-      ingredients: ingredients.split('\n'),
-      instructions,
-      time,
-      difficulty,
-      image: image || '/images/placeholder.jpg',
-    };
+    try {
+      let imageToSend = '/images/placeholder.jpg'; // Standardbild
 
-    console.log('Neues Rezept:', newRecipe);
+      if (imageFile && imagePreview) {
+        imageToSend = imagePreview; // Base64 aus Upload
+      } else if (imageUrl.trim()) {
+        imageToSend = imageUrl.trim();
+      }
 
-    // Später: API-Aufruf oder Speicherung in Context / Zustand
+      const recipeData = {
+        title,
+        ingredients: ingredients.split('\n'),
+        instructions,
+        time,
+        difficulty,
+        image: imageToSend,
+      };
 
-    alert('Rezept gespeichert!');
+      const response = await createRecipe(recipeData);
+
+      alert('Rezept erfolgreich gespeichert!');
+      console.log('Serverantwort:', response);
+      setError('');
+      // Optional Formular zurücksetzen
+    } catch (err) {
+      console.error('Fehler beim Speichern:', err.response?.data || err.message);
+      setError('Fehler beim Speichern. Bitte versuche es erneut.');
+    }
   };
 
   return (
@@ -53,7 +86,6 @@ export default function CreateRecipe() {
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Titel */}
         <div>
           <label htmlFor="title" className="block text-gray-700 font-medium mb-1">
             Rezept-Titel *
@@ -69,7 +101,6 @@ export default function CreateRecipe() {
           />
         </div>
 
-        {/* Zutaten */}
         <div>
           <label htmlFor="ingredients" className="block text-gray-700 font-medium mb-1">
             Zutaten (jeweils eine Zeile) *
@@ -85,7 +116,6 @@ export default function CreateRecipe() {
           ></textarea>
         </div>
 
-        {/* Zubereitung */}
         <div>
           <label htmlFor="instructions" className="block text-gray-700 font-medium mb-1">
             Zubereitung *
@@ -101,7 +131,6 @@ export default function CreateRecipe() {
           ></textarea>
         </div>
 
-        {/* Zubereitungszeit & Schwierigkeit */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="time" className="block text-gray-700 font-medium mb-1">
@@ -114,8 +143,8 @@ export default function CreateRecipe() {
               max="300"
               step="5"
               value={time}
-              onChange={(e) => setTime(parseInt(e.target.value))}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              onChange={(e) => setTime(parseInt(e.target.value, 10))}
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-amber-500"
             />
           </div>
 
@@ -127,7 +156,7 @@ export default function CreateRecipe() {
               id="difficulty"
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-amber-500"
             >
               <option value="leicht">leicht</option>
               <option value="mittel">mittel</option>
@@ -136,22 +165,40 @@ export default function CreateRecipe() {
           </div>
         </div>
 
-        {/* Bild URL */}
         <div>
-          <label htmlFor="image" className="block text-gray-700 font-medium mb-1">
+          <label htmlFor="imageUrl" className="block text-gray-700 font-medium mb-1">
             Bild-URL (optional)
           </label>
           <input
-            id="image"
+            id="imageUrl"
             type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            placeholder="public/images/placeholder.jpg" 
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
+            value={imageUrl}
+            onChange={handleImageUrlChange}
+            placeholder="https://example.com/bild.jpg"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-amber-500"
           />
         </div>
 
-        {/* Submit Button */}
+        <div>
+          <label htmlFor="imageFile" className="block text-gray-700 font-medium mb-1">
+            Oder Bild hochladen (optional)
+          </label>
+          <input
+            id="imageFile"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-full"
+          />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Vorschau"
+              className="mt-4 max-h-60 object-contain rounded border"
+            />
+          )}
+        </div>
+
         <div className="pt-4">
           <button
             type="submit"
