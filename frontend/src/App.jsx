@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import './index.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
@@ -12,6 +12,7 @@ import RecipeList from './pages/Recipes/RecipeList';
 import RecipeDetail from './pages/Recipes/RecipeDetail';
 import CreateRecipe from './pages/Recipes/CreateRecipe';
 import Profile from './pages/Profile';
+import EditRecipe from './pages/Recipes/EditRecipe';
 
 // Komponenten
 import ProtectedRoute from './components/ProtectedRoute';
@@ -19,6 +20,19 @@ import ProtectedRoute from './components/ProtectedRoute';
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    // Beim Laden prüfen, ob Token im localStorage ist
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setUsername('');
+    window.location.href = '/login'; // Weiterleitung nach Logout
+  };
 
   return (
     <BrowserRouter
@@ -36,10 +50,22 @@ export default function App() {
               <Nav className="me-auto flex gap-6">
                 <Nav.Link as={Link} to="/">Home</Nav.Link>
                 <Nav.Link as={Link} to="/recipes">Rezepte</Nav.Link>
-                <Nav.Link as={Link} to="/register">Registrieren</Nav.Link>
-                <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                <Nav.Link as={Link} to="/profile">Profil</Nav.Link>
-                <Nav.Link as={Link} to="/create-recipe">Rezept erstellen</Nav.Link>
+
+                {!isLoggedIn && (
+                  <>
+                    <Nav.Link as={Link} to="/register">Registrieren</Nav.Link>
+                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                  </>
+                )}
+
+{isLoggedIn && (
+  <>
+    <Nav.Link as={Link} to="/profile">Profil</Nav.Link>
+    <Nav.Link as={Link} to="/create-recipe">Rezept erstellen</Nav.Link>
+    <Nav.Link href="#" onClick={logout}>Logout</Nav.Link>
+  </>
+)}
+
               </Nav>
             </Navbar.Collapse>
           </Container>
@@ -72,6 +98,14 @@ export default function App() {
                 </ProtectedRoute>
               } 
             />
+              <Route
+    path="/edit-recipe/:id"
+    element={
+      <ProtectedRoute isLoggedIn={isLoggedIn}>
+        <EditRecipe />
+      </ProtectedRoute>
+    }
+  />
             <Route path="*" element={
               <div className="text-center py-10">
                 <h2>Seite nicht gefunden</h2>

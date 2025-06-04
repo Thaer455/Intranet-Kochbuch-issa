@@ -20,7 +20,14 @@
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1); /* Blaues Hover-Light */
 }
+/* Kopfzeile */
+.nav-link {
+  margin-right: 1rem; 
+}
 
+.nav-link:last-child {
+  margin-right: 0;
+}
 /* Texte */
 .read-the-docs {
   color: #6b7280;
