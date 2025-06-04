@@ -1,6 +1,15 @@
 <?php
 
 header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: PUT, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Preflight-Anfrage direkt beantworten
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 require_once '../../middleware/auth_middleware.php';
 $user_id = authenticate();
@@ -15,8 +24,8 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $recipeId = $_GET['id'];
 
-require_once '../../config/database.php';
-require_once '../../models/Recipe.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../models/Recipe.php';
 
 $recipe = new Recipe($pdo);
 $existingRecipe = $recipe->getById($recipeId);
@@ -33,12 +42,20 @@ if (!isset($data['title'], $data['ingredients'], $data['instructions'])) {
     exit;
 }
 
-$result = $recipe->update($recipeId, [
+// Zutaten sicherstellen als JSON-String, falls Array übergeben wurde
+$ingredients = $data['ingredients'];
+if (is_array($ingredients)) {
+    $ingredients = json_encode($ingredients);
+}
+
+$updateData = [
     'title' => $data['title'],
-    'ingredients' => $data['ingredients'],
+    'ingredients' => $ingredients,
     'instructions' => $data['instructions'],
     'image' => $data['image'] ?? null
-]);
+];
+
+$result = $recipe->update($recipeId, $updateData);
 
 if ($result) {
     echo json_encode(['message' => 'Rezept erfolgreich aktualisiert']);
@@ -46,4 +63,3 @@ if ($result) {
     http_response_code(500);
     echo json_encode(['error' => 'Fehler beim Speichern']);
 }
-?>
