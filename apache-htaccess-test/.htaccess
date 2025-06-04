@@ -1,0 +1,5 @@
+ErrorDocument 404 /404.html
+AuthType Basic
+AuthName "Passwortgeschützter Bereich"
+AuthUserFile /srv/www/apache-htaccess-test/.htpasswd
+Require valid-user

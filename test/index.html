@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Profilkarten mit React</title>
+    <style>
+        .profile-card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px;
+            width: 250px;
+            box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+            background-color: #f9f9f9;
+        }
+        .profile-container {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unser Team</h1>
+    <p>Hier sind einige Mitglieder unseres großartigen Teams:</p>
+    
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        
+        const { createRoot } = ReactDOM;
+
+        function ProfileCard(props) {
+            return (
+                <div className="profile-card">
+                    <h2>{props.name}</h2>
+                    <p>{props.description}</p>
+                    <ul>
+                        {props.skills.map((skill, index) => (
+                            <li key={index}>{skill}</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById('app');
+        const root = createRoot(rootElement);
+
+        root.render(
+            <div className="profile-container">
+                <ProfileCard 
+                    name="Jane Doe" 
+                    description="Web Developer aus Berlin" 
+                    skills={["JavaScript", "React", "CSS"]}
+                />
+                <ProfileCard 
+                    name="Max Mustermann" 
+                    description="Backend Engineer aus Hamburg" 
+                    skills={["Node.js", "Express", "MongoDB"]}
+                />
+                <ProfileCard 
+                    name="Laura Beispiel" 
+                    description="UX Designerin aus München" 
+                    skills={["Figma", "Sketch", "Prototyping"]}
+                />
+            </div>
+        );
+    </script>
+</body>
+</html>

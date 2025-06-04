@@ -370,3 +370,84 @@
         "completed": 0
     }
 ]
+2025-04-22 07:27:45 - GET: []
+2025-04-22 07:28:04 - POST: {
+    "title": "Hauseaufgabe"
+}
+2025-04-22 07:28:04 - GET: [
+    {
+        "id": 37,
+        "uid": "97e1148d-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Hauseaufgabe",
+        "completed": 0
+    }
+]
+2025-04-22 07:28:13 - POST: {
+    "title": "Schlafen"
+}
+2025-04-22 07:28:13 - GET: [
+    {
+        "id": 37,
+        "uid": "97e1148d-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Hauseaufgabe",
+        "completed": 0
+    },
+    {
+        "id": 38,
+        "uid": "9cf95a57-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Schlafen",
+        "completed": 0
+    }
+]
+2025-04-22 07:28:29 - POST: {
+    "title": "W\u00e4sche waschen"
+}
+2025-04-22 07:28:29 - GET: [
+    {
+        "id": 37,
+        "uid": "97e1148d-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Hauseaufgabe",
+        "completed": 0
+    },
+    {
+        "id": 38,
+        "uid": "9cf95a57-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Schlafen",
+        "completed": 0
+    },
+    {
+        "id": 39,
+        "uid": "a68d28b3-1b8b-11f0-85d0-00155d100a0a",
+        "title": "W\u00e4sche waschen",
+        "completed": 0
+    }
+]
+2025-04-22 07:30:42 - POST: {
+    "title": "Daten abgeben"
+}
+2025-04-22 07:30:42 - GET: [
+    {
+        "id": 37,
+        "uid": "97e1148d-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Hauseaufgabe",
+        "completed": 0
+    },
+    {
+        "id": 38,
+        "uid": "9cf95a57-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Schlafen",
+        "completed": 0
+    },
+    {
+        "id": 39,
+        "uid": "a68d28b3-1b8b-11f0-85d0-00155d100a0a",
+        "title": "W\u00e4sche waschen",
+        "completed": 0
+    },
+    {
+        "id": 40,
+        "uid": "f5cfaa59-1b8b-11f0-85d0-00155d100a0a",
+        "title": "Daten abgeben",
+        "completed": 0
+    }
+]
