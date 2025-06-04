@@ -1,46 +1,59 @@
-// src/pages/Recipes/RecipeList.jsx
-import React from 'react';
-import RecipeCard from '../../components/RecipeCard';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function RecipeList() {
-  // Dummy-Rezeptdaten – später durch API-Daten ersetzen
-  const recipes = [
-    {
-      id: 1,
-      title: "Pasta Carbonara",
-      image: "/images/carbonara.jpg", // Achte darauf, dass das Bild im /public/images-Ordner liegt
-      time: 20,
-      difficulty: "Mittel"
-    },
-    {
-      id: 2,
-      title: "Vegetarische Lasagne",
-      image: "/images/lasagne.jpg ",
-      time: 45,
-      difficulty: "Mittel"
-    },
-    {
-      id: 3,
-      title: "Schnelle Tomatensuppe",
-      image: "https://picsum.photos/id/260/600/400 ",
-      time: 30,
-      difficulty: "Leicht"
-    }
-  ];
+  const [recipes, setRecipes] = useState([]);
+  const [error, setError] = useState(null);
+  const token = localStorage.getItem('token');
+
+useEffect(() => {
+  fetch('http://localhost:8000/controllers/recipe/read.php')
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data)) {
+        setRecipes(data);
+      } else {
+        console.error("Unerwartetes Ergebnis vom Server:", data);
+        setRecipes([]); // optional
+      }
+    })
+    .catch(err => {
+      console.error("Fehler beim Laden der Rezepte:", err);
+    });
+}, []);
+
+
+  if (error) {
+    return <p className="text-red-600">{error}</p>;
+  }
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">Alle Rezepte</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-center mb-8">Alle Rezepte</h1>
 
-      {recipes.length === 0 ? (
-        <p className="text-gray-600">Keine Rezepte gefunden.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recipes.map(recipe => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {recipes.map((recipe) => (
+          <Link
+            to={`/recipes/${recipe.id}`}
+            key={recipe.id}
+            className="block rounded-lg shadow-md hover:shadow-lg transition duration-300 bg-white overflow-hidden"
+          >
+            <img
+              src={recipe.image || 'https://via.placeholder.com/600x400'}
+              alt={recipe.title}
+              style={{ width: '300px', height: '200px', objectFit: 'cover' }}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4">
+              <h2 className="text-xl font-semibold text-gray-800">{recipe.title}</h2>
+              <p className="text-gray-600 text-sm mt-2">
+                Dauer: {recipe.time} Minuten
+              </p>
+              <p className="text-gray-600 text-sm">Schwierigkeit: {recipe.difficulty}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

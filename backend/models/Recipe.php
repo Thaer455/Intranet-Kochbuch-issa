@@ -20,12 +20,17 @@ class Recipe {
     }
 
     public function create($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO recipe (title, ingredients, instructions, image, user_id) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $this->pdo->prepare("
+            INSERT INTO recipe (title, ingredients, instructions, time, difficulty, image, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
         return $stmt->execute([
             $data['title'],
             $data['ingredients'],
             $data['instructions'],
-            $data['image'] ?? null,
+            $data['time'],
+            $data['difficulty'],
+            $data['image'],
             $data['user_id']
         ]);
     }
