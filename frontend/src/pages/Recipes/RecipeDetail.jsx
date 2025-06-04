@@ -1,72 +1,157 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function RecipeDetail() {
-  const { id } = useParams(); // Holen der Rezept-ID aus der URL
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const userId = Number(localStorage.getItem('user_id'));
 
-  // Simuliere Rezeptdaten – später durch API-Daten ersetzen
-  const recipe = {
-    id: id,
-    title: 'Leckere Nudelpfanne',
-    ingredients: ['200g Nudeln', '1 Paprika', '1 Zwiebel', '2 Knoblauchzehen', 'Tomatenmark', 'Salz & Pfeffer'],
-    instructions: '1. Nudeln kochen.\n2. Gemüse anbraten.\n3. Tomatenmark hinzufügen.\n4. Mit Salz & Pfeffer würzen.\n5. Alles zusammen servieren.',
-    time: 30,
-    difficulty: 'mittel',
-    image: 'https://via.placeholder.com/600x400 ',
-    author: 'Max Mustermann',
-    createdAt: '2025-05-10'
+  const [creator, setCreator] = useState(null);
+  const [recipe, setRecipe] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+
+    fetch(`http://localhost:8000/controllers/recipe/read.php?id=${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP Fehler: ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        // Falls API einen Fehler sendet
+        if (data.error) throw new Error(data.error);
+
+        // Zutaten korrekt parsen, falls als JSON-String
+        if (data.ingredients && typeof data.ingredients === 'string') {
+          try {
+            data.ingredients = JSON.parse(data.ingredients);
+          } catch {
+            // Falls kein JSON, dann als einzelnes Element im Array speichern
+            data.ingredients = [data.ingredients];
+          }
+        }
+
+        setRecipe(data);
+        setLoading(false);
+
+        // Falls user_id im Rezept vorhanden, Userdaten laden
+        if (data.user_id) {
+          return fetch(`http://localhost:8000/controllers/user/get_user.php?id=${data.user_id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        }
+        return null;
+      })
+      .then(res => {
+        if (res && res.ok) return res.json();
+        return null;
+      })
+      .then(userData => {
+        if (userData && !userData.error) setCreator(userData);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [id, token]);
+
+ const handleEdit = () => {
+navigate(`/edit-recipe/${recipe.id}`);
+};
+
+
+  const handleDelete = () => {
+    if (!window.confirm('Möchten Sie dieses Rezept wirklich löschen?')) return;
+
+    fetch(`http://localhost:8000/controllers/recipe/delete.php?id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(data => {
+            throw new Error(data.error || 'Löschen fehlgeschlagen');
+          });
+        }
+        return res.json();
+      })
+      .then(data => {
+        alert(data.message || 'Rezept erfolgreich gelöscht');
+        navigate('/recipes');
+      })
+      .catch(err => alert('Fehler beim Löschen: ' + err.message));
   };
+
+  if (loading) return <p>Lädt...</p>;
+  if (error) return <p className="text-red-600">Fehler: {error}</p>;
+  if (!recipe) return <p className="text-red-600">Rezept nicht gefunden.</p>;
 
   return (
     <div className="container mx-auto p-6">
-      {/* Rezept-Titel */}
       <h1 className="text-3xl font-bold text-gray-800 mb-2">{recipe.title}</h1>
-      <p className="text-sm text-gray-600 mb-6">von {recipe.author} am {new Date(recipe.createdAt).toLocaleDateString('de-DE')}</p>
 
-      {/* Bild */}
+      <p className="text-sm text-gray-600 mb-6">
+        von Benutzer <strong>{creator?.name || `#${recipe.user_id}`}</strong> am {new Date(recipe.created_at).toLocaleDateString('de-DE')}
+      </p>
+
       <div className="mb-6 rounded-lg overflow-hidden shadow-md">
-        <img 
-          src={recipe.image} 
-          alt={recipe.title}
-          className="w-full h-auto object-cover"
-        />
+        <img src={recipe.image || 'https://via.placeholder.com/600x400'} alt={recipe.title} className="w-full h-auto object-cover" />
       </div>
 
-      {/* Info-Zusammenfassung */}
       <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-700">
         <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full">⏱️ {recipe.time} Min</span>
         <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full">⚡ {recipe.difficulty}</span>
       </div>
 
-      {/* Zutaten */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-700 mb-2">Zutaten</h2>
         <ul className="list-disc pl-5 space-y-1">
-          {recipe.ingredients.map((ingredient, index) => (
-            <li key={index} className="text-gray-800">{ingredient}</li>
-          ))}
+          {Array.isArray(recipe.ingredients)
+            ? recipe.ingredients.map((ingredient, index) => (
+                <li key={index} className="text-gray-800">{ingredient}</li>
+              ))
+            : <li className="text-gray-800">{recipe.ingredients}</li>}
         </ul>
       </div>
 
-      {/* Zubereitung */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-700 mb-2">Zubereitung</h2>
         <ol className="list-decimal pl-5 space-y-2 text-gray-800">
-          {recipe.instructions.split('\n').map((step, index) => (
+          {recipe.instructions?.split('\n').map((step, index) => (
             <li key={index}>{step}</li>
           ))}
         </ol>
+
+
       </div>
 
-      {/* Aktionen (später erweiterbar) */}
-      <div className="flex gap-4 mt-8">
-        <button className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded transition">
-          Rezept bearbeiten
-        </button>
-        <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition">
-          Rezept löschen
-        </button>
-      </div>
+{token && Number(userId) === Number(recipe.user_id) && (
+  <div className="flex gap-4 mt-8">
+    <button
+      onClick={handleEdit}
+      className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded transition"
+    >
+      Rezept bearbeiten
+    </button>
+    <button
+      onClick={handleDelete}
+      className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition"
+    >
+      Rezept löschen
+    </button>
+  </div>
+)}
+
     </div>
   );
 }
