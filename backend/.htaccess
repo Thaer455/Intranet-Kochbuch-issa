@@ -1,4 +1,12 @@
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "http://fi1.mshome.net:5001"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^api/(.*)$ /backend/index.php [QSA,L]
+RewriteRule ^api/(.*)$ /Intranet-Kochbuch-issa/backend/index.php [QSA,L]
+
