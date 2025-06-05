@@ -1,6 +1,20 @@
-// src/components/RecipeCard.jsx
 import { Link } from 'react-router-dom';
 
+/**
+ * Zeigt eine Vorschau-Karte für ein Rezept an, inklusive Bild, Titel, Kategorie, Zeit und Schwierigkeit.
+ * Enthält außerdem einen Button, um das Rezept als Favorit zu markieren.
+ *
+ * @param {Object} props
+ * @param {Object} props.recipe - Das Rezept-Objekt.
+ * @param {number|string} props.recipe.id - Die ID des Rezepts.
+ * @param {string} props.recipe.title - Der Titel des Rezepts.
+ * @param {string} [props.recipe.image] - Bild-URL des Rezepts.
+ * @param {string} [props.recipe.category] - Kategorie des Rezepts.
+ * @param {number|string} props.recipe.time - Zubereitungszeit in Minuten.
+ * @param {string} props.recipe.difficulty - Schwierigkeitsgrad (z.B. „leicht“, „mittel“, „schwer“).
+ * 
+ * @returns {JSX.Element} React-Komponente für eine Rezept-Karte mit Link zur Detailseite.
+ */
 export default function RecipeCard({ recipe }) {
   return (
     <Link 
@@ -13,7 +27,6 @@ export default function RecipeCard({ recipe }) {
           alt={recipe.title}
           className="absolute h-full w-full object-cover"
         />
-        {/* Kategorie Label */}
         {recipe.category && (
           <span className="absolute top-2 left-2 bg-amber-500 text-white text-xs px-2 py-1 rounded">
             {recipe.category}
@@ -28,15 +41,13 @@ export default function RecipeCard({ recipe }) {
           <span>⏱️ {recipe.time} Min</span>
           <span>⚡ {recipe.difficulty}</span>
         </div>
-
-        {/* Favoriten-Stern */}
         <div className="mt-3 flex justify-end">
           <button 
             type="button" 
             className="bg-white rounded-full p-1 shadow-sm"
             onClick={(e) => {
-              e.preventDefault(); // Verhindert Navigation beim Klicken
-              // Später: Funktion zum Hinzufügen/Entfernen aus Favoriten
+              e.preventDefault();
+              // Funktion zum Favorisieren folgt später
             }}
           >
             <svg 

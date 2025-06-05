@@ -2,11 +2,25 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, storeUserData } from '../services/auth.service';
 
+/**
+ * Login-Komponente für die Benutzeranmeldung.
+ *
+ * @param {Object} props
+ * @param {function} props.setIsLoggedIn - Funktion zum Setzen des Login-Status im Parent-Component.
+ * @param {function} props.setUsername - Funktion zum Setzen des Benutzernamens im Parent-Component.
+ * @returns {JSX.Element} Das Login-Formular
+ */
 export default function Login({ setIsLoggedIn, setUsername }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  /**
+   * Behandelt das Abschicken des Login-Formulars.
+   * Führt den Login durch, speichert Token und Benutzerdaten und navigiert zur Startseite.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - Formular-Submit-Event
+   */
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -17,11 +31,11 @@ export default function Login({ setIsLoggedIn, setUsername }) {
         // Token + Benutzerdaten speichern
         storeUserData(data.token, data.user);
 
-        // Zustand aktualisieren
+        // Zustand im Parent aktualisieren
         setIsLoggedIn(true);
         setUsername(data.user.name || data.user.email);
 
-        // Weiterleitung
+        // Zur Startseite weiterleiten
         navigate('/');
       }
     } catch (err) {

@@ -2,6 +2,26 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/auth.service';
 
+
+/**
+ * Register-Komponente für die Benutzerregistrierung.
+ *
+ * Zeigt ein Formular an, in dem Benutzer ihren Benutzernamen, ihre E-Mail-Adresse,
+ * ein Passwort und die Passwortbestätigung eingeben können.
+ * 
+ * Validiert das Passwort auf Mindestanforderungen (mind. 8 Zeichen, Großbuchstabe, Zahl, Sonderzeichen).
+ * Prüft, ob die Passwörter übereinstimmen.
+ * Sendet die Registrierungsdaten an den Server über die `register`-Funktion.
+ * Navigiert nach erfolgreicher Registrierung zur Login-Seite.
+ *
+ * Fehler beim Validieren oder Registrieren werden dem Benutzer angezeigt.
+ *
+ * @component
+ * @returns {JSX.Element} Registrierungsformular
+ */
+
+
+
 export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

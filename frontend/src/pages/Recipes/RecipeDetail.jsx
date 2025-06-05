@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+/**
+ * Komponente zur Anzeige der Detailansicht eines Rezepts.
+ * 
+ * Lädt das Rezept sowie den Ersteller anhand der ID aus der URL.
+ * Zeigt Rezeptinformationen, Zutaten und Zubereitung an.
+ * Bietet dem Rezept-Ersteller die Möglichkeit, das Rezept zu bearbeiten oder zu löschen.
+ */
 export default function RecipeDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -11,10 +18,15 @@ export default function RecipeDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Aktuell eingeloggter Benutzer (userId aus localStorage)
   const storedUserId = localStorage.getItem('userId');
   const currentUserId = storedUserId ? parseInt(storedUserId, 10) : null;
 
-
+  /**
+   * Lädt das Rezept und den Ersteller vom Server.
+   * Verwendet das gespeicherte Token zur Authentifizierung.
+   * Parst Zutaten aus JSON-String, falls notwendig.
+   */
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -60,12 +72,19 @@ export default function RecipeDetail() {
       });
   }, [id, token]);
 
+  /**
+   * Navigiert zur Bearbeitungsseite für das aktuelle Rezept.
+   */
   const handleEdit = () => {
     if (recipe) {
       navigate(`/edit-recipe/${recipe.id}`);
     }
   };
 
+  /**
+   * Löscht das aktuelle Rezept nach Bestätigung.
+   * Navigiert anschließend zurück zur Rezeptübersicht.
+   */
   const handleDelete = () => {
     if (!window.confirm('Möchten Sie dieses Rezept wirklich löschen?')) return;
 

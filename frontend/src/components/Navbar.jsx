@@ -1,6 +1,15 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 
+/**
+ * Navbar-Komponente mit Desktop- und Mobile-Navigation.
+ * 
+ * Zeigt den App-Namen, Navigationslinks für Rezepte und Login,
+ * sowie ein mobiles Menü, das bei kleinen Bildschirmen aufgeklappt werden kann.
+ * 
+ * @component
+ * @returns {JSX.Element} Die Navigationsleiste mit responsivem Verhalten.
+ */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,8 +43,9 @@ export default function Navbar() {
           <button 
             className="md:hidden text-gray-700 focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Menü umschalten"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               {isOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (

@@ -4,7 +4,22 @@ import './index.css';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 
-// Seiten
+
+/**
+ * Hauptkomponente der Anwendung mit Routing und Navigation.
+ *
+ * Verwaltet den Anmeldestatus und den Benutzernamen im State.
+ * Prüft beim Laden, ob ein Token im localStorage vorhanden ist, um den Login-Status zu setzen.
+ * Stellt eine Navigationsleiste bereit, die sich dynamisch an den Login-Status anpasst.
+ * Definiert die Routen für alle Seiten der Anwendung.
+ * Schützt bestimmte Routen (z.B. Profil, Rezept erstellen/bearbeiten) vor unbefugtem Zugriff durch ProtectedRoute-Komponente.
+ * Ermöglicht Logout durch Entfernen des Tokens und Weiterleitung zur Login-Seite.
+ *
+ * @component
+ * @returns {JSX.Element} Die komplette App mit Navigation, Routen und Footer
+ */
+
+
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';

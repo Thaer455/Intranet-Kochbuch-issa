@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { createRecipe } from '../../services/recipe.service';
 
+/**
+ * Formular-Komponente zum Erstellen und Hochladen eines neuen Rezepts.
+ * 
+ * - Erlaubt Eingabe von Titel, Zutaten, Anweisungen, Zubereitungszeit, Schwierigkeitsgrad.
+ * - Bild kann per URL angegeben oder lokal hochgeladen werden mit Vorschau.
+ * - Validiert Pflichtfelder und zeigt Fehlermeldungen an.
+ * - Sendet die Rezeptdaten über den Service `createRecipe` an den Server.
+ * - Zeigt Erfolgsmeldung bei erfolgreichem Absenden.
+ * 
+ * @component
+ * @returns {JSX.Element} Das Formular zur Rezepterstellung.
+ */
+
 export default function CreateRecipe() {
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState('');

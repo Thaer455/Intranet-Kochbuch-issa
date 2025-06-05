@@ -1,6 +1,11 @@
-// src/components/Layout.jsx
 import { Outlet } from 'react-router-dom';
 
+/**
+ * Layout-Komponente für die App mit Header, Footer und Platzhalter für Inhalte.
+ * 
+ * @component
+ * @returns {JSX.Element} Das Layout mit Header, Hauptbereich und Footer.
+ */
 export default function Layout() {
   return (
     <div>

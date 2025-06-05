@@ -1,30 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ * Zeigt eine Liste aller Rezepte an.
+ * Lädt die Rezepte vom Server und stellt sie als Kacheln dar.
+ * Jedes Rezept kann zur Detailseite geöffnet werden.
+ * 
+ * @component
+ * @returns {JSX.Element} Die Rezeptliste
+ */
 export default function RecipeList() {
   const [recipes, setRecipes] = useState([]);
   const [error, setError] = useState(null);
   const token = localStorage.getItem('token');
 
-useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_URL}/controllers/recipe/read.php`)
-  
-    .then(res => res.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        setRecipes(data);
-      } else {
-        console.error("Unerwartetes Ergebnis vom Server:", data);
-        setRecipes([]); // optional
-      }
-    })
-    .catch(err => {
-      console.error("Fehler beim Laden der Rezepte:", err);
-    });
-}, []);
-
+  useEffect(() => {
+    // Lädt Rezepte vom Backend
+    fetch(`${import.meta.env.VITE_API_URL}/controllers/recipe/read.php`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setRecipes(data);
+        } else {
+          console.error("Unerwartetes Ergebnis vom Server:", data);
+          setRecipes([]); // optional
+        }
+      })
+      .catch(err => {
+        console.error("Fehler beim Laden der Rezepte:", err);
+      });
+  }, []);
 
   if (error) {
+    // Zeigt Fehlermeldung im UI an
     return <p className="text-red-600">{error}</p>;
   }
 

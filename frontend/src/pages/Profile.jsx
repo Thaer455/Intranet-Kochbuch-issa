@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+/**
+ * Profil-Komponente zum Anzeigen und Bearbeiten der Benutzerdaten.
+ *
+ * Lädt Profildaten vom Server, zeigt sie an und ermöglicht das Bearbeiten und Speichern.
+ *
+ * @returns {JSX.Element} Profil-Ansicht mit Bearbeitungsfunktion
+ */
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -7,6 +14,7 @@ export default function Profile() {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '' });
 
+  // Lädt die Profildaten beim ersten Rendern der Komponente
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');
@@ -39,11 +47,19 @@ export default function Profile() {
     fetchProfile();
   }, []);
 
+  /**
+   * Aktualisiert die Formulardaten beim Ändern eines Eingabefelds.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Change Event des Eingabefeldes
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Speichert die bearbeiteten Profildaten auf dem Server.
+   */
   const handleSave = async () => {
     const token = localStorage.getItem('token');
     try {

@@ -1,6 +1,13 @@
 // src/pages/Home/Home.jsx
 import React from 'react';
 
+/**
+ * Startseite des Intranet-Kochbuchs.
+ * Zeigt eine Begrüßung und das Logo.
+ *
+ * @component
+ * @returns {JSX.Element} Die Home-Komponente mit Begrüßung und Logo
+ */
 export default function Home() {
   return (
     <div className="container mx-auto p-6">

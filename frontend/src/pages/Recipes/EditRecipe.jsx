@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+/**
+ * Komponente zum Bearbeiten eines Rezepts.
+ * 
+ * Lädt das Rezept anhand der ID aus der URL,
+ * zeigt ein Formular zum Bearbeiten an und
+ * speichert die Änderungen über eine API.
+ */
 export default function EditRecipe() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
   const [error, setError] = useState('');
 
+  /**
+   * Lädt das Rezept vom Server, wenn die Komponente gemountet wird oder die ID sich ändert.
+   * Verwendet das gespeicherte Token aus localStorage zur Authentifizierung.
+   * Bei Erfolg wird das Rezept im State gespeichert,
+   * Zutaten werden als mehrzeiliger String dargestellt.
+   */
   useEffect(() => {
     const token = localStorage.getItem('token');
 
@@ -21,15 +34,21 @@ export default function EditRecipe() {
           setError(data.error);
         } else {
           setRecipe({
-  ...data,
-  ingredients: Array.isArray(data.ingredients)
-    ? data.ingredients.join('\n')  // neue Zeile statt Komma
-    : data.ingredients
-});
+            ...data,
+            ingredients: Array.isArray(data.ingredients)
+              ? data.ingredients.join('\n')  // neue Zeile statt Komma
+              : data.ingredients
+          });
         }
       });
   }, [id]);
 
+  /**
+   * Handler für das Absenden des Formulars.
+   * Sendet die geänderten Rezeptdaten per PUT an die API.
+   * Zutaten werden als Array erwartet, deshalb Umwandlung aus String.
+   * Bei Erfolg wird zur Detailseite des Rezepts navigiert.
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -40,13 +59,14 @@ export default function EditRecipe() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-body: JSON.stringify({
-  ...recipe,
-  ingredients: recipe.ingredients
-    .split('\n')              // jede Zeile = ein Eintrag
-    .map(i => i.trim())       // trimmt Leerzeichen
-    .filter(i => i.length > 0) // entfernt leere Zeilen
-})    })
+      body: JSON.stringify({
+        ...recipe,
+        ingredients: recipe.ingredients
+          .split('\n')              // jede Zeile = ein Eintrag
+          .map(i => i.trim())       // trimmt Leerzeichen
+          .filter(i => i.length > 0) // entfernt leere Zeilen
+      })
+    })
       .then(res => res.json())
       .then(data => {
         if (data.error) {
@@ -57,6 +77,10 @@ body: JSON.stringify({
       });
   };
 
+  /**
+   * Handler für Änderungen in den Formularfeldern.
+   * Aktualisiert das Rezept im State entsprechend.
+   */
   const handleChange = (e) => {
     setRecipe({
       ...recipe,
