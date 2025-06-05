@@ -7,7 +7,8 @@ export default function RecipeList() {
   const token = localStorage.getItem('token');
 
 useEffect(() => {
-  fetch('http://localhost:8000/controllers/recipe/read.php')
+  fetch(`${import.meta.env.VITE_API_URL}/controllers/recipe/read.php`)
+  
     .then(res => res.json())
     .then(data => {
       if (Array.isArray(data)) {

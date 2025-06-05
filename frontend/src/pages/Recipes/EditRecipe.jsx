@@ -10,7 +10,7 @@ export default function EditRecipe() {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch(`http://localhost:8000/api/recipes/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/recipe/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -34,7 +34,7 @@ export default function EditRecipe() {
     e.preventDefault();
     const token = localStorage.getItem('token');
 
-    fetch(`http://localhost:8000/controllers/recipe/update.php?id=${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/controllers/recipe/update.php?id=${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

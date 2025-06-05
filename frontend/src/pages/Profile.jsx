@@ -10,8 +10,9 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');
+
       try {
-        const response = await fetch('http://localhost:8000/controllers/user/profile.php', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/controllers/user/profile.php`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -26,6 +27,7 @@ export default function Profile() {
         const data = await response.json();
         setUser(data.user);
         setFormData({ name: data.user.name, email: data.user.email });
+
       } catch (err) {
         console.error('Profil konnte nicht geladen werden:', err.message);
         setError('Fehler beim Laden des Profils.');
@@ -45,7 +47,7 @@ export default function Profile() {
   const handleSave = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:8000/controllers/user/profile.php', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/controllers/user/profile.php`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -5,36 +5,34 @@ export default function RecipeDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const userId = Number(localStorage.getItem('user_id'));
 
   const [creator, setCreator] = useState(null);
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
+  const storedUserId = localStorage.getItem('userId');
+  const currentUserId = storedUserId ? parseInt(storedUserId, 10) : null;
 
 
   useEffect(() => {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:8000/controllers/recipe/read.php?id=${id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+    fetch(`${import.meta.env.VITE_API_URL}/controllers/recipe/read.php?id=${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
         if (!res.ok) throw new Error(`HTTP Fehler: ${res.status}`);
         return res.json();
       })
       .then(data => {
-        // Falls API einen Fehler sendet
         if (data.error) throw new Error(data.error);
 
-        // Zutaten korrekt parsen, falls als JSON-String
         if (data.ingredients && typeof data.ingredients === 'string') {
           try {
             data.ingredients = JSON.parse(data.ingredients);
           } catch {
-            // Falls kein JSON, dann als einzelnes Element im Array speichern
             data.ingredients = [data.ingredients];
           }
         }
@@ -42,10 +40,9 @@ export default function RecipeDetail() {
         setRecipe(data);
         setLoading(false);
 
-        // Falls user_id im Rezept vorhanden, Userdaten laden
         if (data.user_id) {
-          return fetch(`http://localhost:8000/controllers/user/get_user.php?id=${data.user_id}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+          return fetch(`${import.meta.env.VITE_API_URL}/controllers/user/get_user.php?id=${data.user_id}`, {
+            headers: { Authorization: `Bearer ${token}` }
           });
         }
         return null;
@@ -63,19 +60,18 @@ export default function RecipeDetail() {
       });
   }, [id, token]);
 
- const handleEdit = () => {
-navigate(`/edit-recipe/${recipe.id}`);
-};
-
+  const handleEdit = () => {
+    if (recipe) {
+      navigate(`/edit-recipe/${recipe.id}`);
+    }
+  };
 
   const handleDelete = () => {
     if (!window.confirm('Möchten Sie dieses Rezept wirklich löschen?')) return;
 
-    fetch(`http://localhost:8000/controllers/recipe/delete.php?id=${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/controllers/recipe/delete.php?id=${id}`, {
       method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
         if (!res.ok) {
@@ -131,27 +127,24 @@ navigate(`/edit-recipe/${recipe.id}`);
             <li key={index}>{step}</li>
           ))}
         </ol>
-
-
       </div>
 
-{token && Number(userId) === Number(recipe.user_id) && (
-  <div className="flex gap-4 mt-8">
-    <button
-      onClick={handleEdit}
-      className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded transition"
-    >
-      Rezept bearbeiten
-    </button>
-    <button
-      onClick={handleDelete}
-      className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition"
-    >
-      Rezept löschen
-    </button>
-  </div>
-)}
-
+      {recipe && currentUserId === Number(recipe.user_id) && (
+        <div className="flex gap-4 mt-8">
+          <button
+            onClick={handleEdit}
+            className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded transition"
+          >
+            Rezept bearbeiten
+          </button>
+          <button
+            onClick={handleDelete}
+            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition"
+          >
+            Rezept löschen
+          </button>
+        </div>
+      )}
     </div>
   );
 }
