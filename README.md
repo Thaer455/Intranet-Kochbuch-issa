@@ -105,7 +105,7 @@ npm install
 ```bash
 npm run dev
 ```
-Die App ist dann unter http://localhost:5173 erreichbar.
+Die App ist dann unter [http://fi1.mshome.net:5001/] erreichbar.
 
 ### Backend
 
@@ -121,7 +121,7 @@ composer install
 ```bash
 php -S localhost:8000
 ```
-Die API-Endpunkte sind dann unter http://localhost:8000/api/... erreichbar.
+Die API-Endpunkte sind dann unter http://fi1.mshome.net/Intranet-Kochbuch-issa/backend/.. erreichbar.
 
 ### Alternativ:
 Konfigurieren Sie einen Webserver wie Apache oder Nginx auf das `backend/`-Verzeichnis.
