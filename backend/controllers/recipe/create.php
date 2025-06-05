@@ -1,6 +1,21 @@
 <?php
-// controllers/recipe/create.php
-
+/**
+ * API-Endpunkt zum Erstellen eines neuen Rezepts.
+ * 
+ * Erwartet JSON-Input mit folgenden Feldern:
+ * - title (string): Titel des Rezepts
+ * - ingredients (array|string): Zutaten (Array oder JSON-String)
+ * - instructions (array|string): Anweisungen (Array oder JSON-String)
+ * - time (int|string): Zubereitungszeit
+ * - difficulty (string): Schwierigkeit
+ * - image (string|null): optional, Bild-URL oder Pfad
+ * 
+ * Authentifiziert den Nutzer mittels Middleware.
+ * Wandelt Arrays in JSON um, wenn nötig.
+ * Speichert das Rezept in der Datenbank mit der zugehörigen User-ID.
+ * 
+ * @return void
+ */
 
 require_once __DIR__ . '/../../middleware/auth_middleware.php';
 $user_id = authenticate();
@@ -37,3 +52,4 @@ if ($result) {
     http_response_code(500);
     echo json_encode(['error' => 'Fehler beim Erstellen']);
 }
+?>

@@ -1,7 +1,16 @@
 <?php
+/**
+ * API-Endpunkt zum Aktualisieren eines Rezepts.
+ * 
+ * Überprüft die Authentifizierung des Nutzers.
+ * Prüft, ob die Rezept-ID per GET übergeben wurde und ob das Rezept dem Nutzer gehört.
+ * Erwartet JSON-Daten mit title, ingredients und instructions im Request-Body.
+ * Aktualisiert das Rezept in der Datenbank.
+ * Gibt eine Erfolgsmeldung oder Fehler zurück.
+ * 
+ * @return void
+ */
 
-
-// Preflight-Anfrage direkt beantworten
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
@@ -58,3 +67,4 @@ if ($result) {
     http_response_code(500);
     echo json_encode(['error' => 'Fehler beim Speichern']);
 }
+?>

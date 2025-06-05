@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * API-Endpunkt zum Löschen eines Rezepts.
+ * 
+ * Erwartet eine Rezept-ID als GET-Parameter "id".
+ * Überprüft, ob der authentifizierte Nutzer berechtigt ist, das Rezept zu löschen.
+ * Antwortet mit Erfolgsmeldung oder Fehlerstatus.
+ * 
+ * @return void
+ */
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -37,3 +45,4 @@ if ($result) {
     http_response_code(500);
     echo json_encode(['error' => 'Fehler beim Löschen']);
 }
+?>

@@ -1,4 +1,15 @@
 <?php
+/**
+ * Middleware zur Authentifizierung via JWT.
+ *
+ * Liest den Authorization-Header aus, erwartet ein Bearer-Token.
+ * Dekodiert das JWT mit einem geheimen Schlüssel.
+ * Gibt die Benutzer-ID zurück, wenn gültig.
+ * Gibt Fehler mit HTTP 401 zurück, wenn Token fehlt oder ungültig ist.
+ *
+ * Benötigt firebase/php-jwt via Composer.
+ */
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Firebase\JWT\JWT;
@@ -17,7 +28,7 @@ function authenticate() {
     $jwt = str_replace('Bearer ', '', $token);
 
     try {
-        // Geheimer Schlüssel (sollte sicher in .env liegen)
+        // Geheimer Schlüssel (sollte sicher in .env oder Konfigurationsdatei liegen)
         $secret_key = "dein_geheimer_schluessel_123!";
         
         // Token dekodieren

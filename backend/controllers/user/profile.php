@@ -1,6 +1,16 @@
 <?php
-
-
+/**
+ * API-Endpunkt für Benutzerprofil.
+ *
+ * Unterstützt:
+ * - GET: Liefert die Profildaten des authentifizierten Benutzers zurück.
+ * - PUT: Aktualisiert Name und E-Mail des authentifizierten Benutzers.
+ * 
+ * Behandelt OPTIONS-Preflight-Anfragen für CORS.
+ * Gibt JSON-Antworten mit Erfolg oder Fehlermeldungen zurück.
+ * 
+ * Benötigt Authentifizierung via auth_middleware.php.
+ */
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
@@ -56,3 +66,4 @@ try {
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Serverfehler: ' . $e->getMessage()]);
 }
+?>

@@ -1,5 +1,17 @@
 <?php
-
+/**
+ * API-Endpunkt zur Nutzerregistrierung.
+ * 
+ * Erwartet JSON-Input mit "email", "password" und "name".
+ * Validiert Eingaben, prüft Passwortregeln, hasht das Passwort und legt
+ * den Nutzer in der Datenbank an.
+ * 
+ * HTTP-Methoden:
+ * - OPTIONS: Preflight-Request wird direkt beendet
+ * - POST: Registrierung mit JSON-Daten
+ * 
+ * @return void
+ */
 
 // Preflight-Check (OPTIONS)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -69,3 +81,4 @@ try {
     http_response_code(400);
     echo json_encode(['error' => $e->getMessage()]);
 }
+?>

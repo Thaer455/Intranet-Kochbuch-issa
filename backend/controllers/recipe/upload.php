@@ -1,4 +1,21 @@
 <?php
+/**
+ * Einfaches PHP-Skript zum Hochladen von Bildern.
+ * 
+ * Erwartet eine POST-Anfrage mit einer Datei im Feld 'image'.
+ * Erlaubt nur Bilddateien der Typen JPEG, PNG und GIF.
+ * Speichert die Datei im Verzeichnis "uploads" (relativ zum Skript).
+ * Gibt nach erfolgreichem Upload den relativen Pfad zum Bild als JSON zurück.
+ * Bei Fehlern werden entsprechende HTTP-Statuscodes und Fehlermeldungen im JSON-Format ausgegeben.
+ * 
+ * Usage:
+ *  - POST /upload.php mit multipart/form-data und dem Feld 'image'
+ * 
+ * Antwort-Beispiele:
+ *  - Erfolg: { "imageUrl": "/uploads/uniquefilename.jpg" }
+ *  - Fehler: { "error": "Fehlermeldung" }
+ */
+
 $targetDir = __DIR__ . "/uploads/"; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {

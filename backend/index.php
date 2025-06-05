@@ -1,31 +1,64 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+/**
+ * Handle CORS Preflight requests.
+ * 
+ * @return void
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-$basePath = '/Intranet-Kochbuch-issa/backend'; // anpassen, je nachdem, wie dein URL aufgebaut ist
+/**
+ * Basis-Pfad der API (anpassen je nach Server-Setup).
+ * 
+ * @var string
+ */
+$basePath = '/Intranet-Kochbuch-issa/backend';
+
+/**
+ * Voller Pfad der aktuellen Anfrage.
+ * 
+ * @var string
+ */
 $fullPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+/**
+ * Pfad relativ zum Basis-Pfad, der die Route angibt.
+ * 
+ * @var string
+ */
 $request = substr($fullPath, strlen($basePath));
 
+/**
+ * Routing für Requests mit ID (z.B. /api/recipe/123).
+ */
 if (preg_match('#^/api/recipe/(\d+)$#', $request, $matches)) {
     $_GET['id'] = $matches[1];
 
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        require_once __DIR__ . "/controllers/recipe/read.php";
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-        require_once __DIR__ . "/controllers/recipe/update.php";
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        require_once __DIR__ . "/controllers/recipe/delete.php";
-    } else {
-        http_response_code(405);
-        echo json_encode(['error' => 'Methode nicht erlaubt']);
+    switch ($_SERVER['REQUEST_METHOD']) {
+        case 'GET':
+            require_once __DIR__ . "/controllers/recipe/read.php";
+            break;
+        case 'PUT':
+            require_once __DIR__ . "/controllers/recipe/update.php";
+            break;
+        case 'DELETE':
+            require_once __DIR__ . "/controllers/recipe/delete.php";
+            break;
+        default:
+            http_response_code(405);
+            echo json_encode(['error' => 'Methode nicht erlaubt']);
+            break;
     }
     exit();
 }
 
+/**
+ * Routing für Requests ohne ID.
+ */
 switch ($request) {
     case '/api/auth/register':
         require_once __DIR__ . '/controllers/auth/register.php';
@@ -40,17 +73,22 @@ switch ($request) {
         break;
 
     case '/api/recipe':
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            require_once __DIR__ . '/controllers/recipe/read.php';
-        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            require_once __DIR__ . '/controllers/recipe/create.php';
-        } else {
-            http_response_code(405);
-            echo json_encode(['error' => 'Methode nicht erlaubt']);
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                require_once __DIR__ . '/controllers/recipe/read.php';
+                break;
+            case 'POST':
+                require_once __DIR__ . '/controllers/recipe/create.php';
+                break;
+            default:
+                http_response_code(405);
+                echo json_encode(['error' => 'Methode nicht erlaubt']);
+                break;
         }
         break;
 
     default:
-        header("HTTP/1.1 404 Not Found");
+        http_response_code(404);
         echo json_encode(['error' => 'Route nicht gefunden']);
+        break;
 }

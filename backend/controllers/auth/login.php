@@ -1,10 +1,22 @@
 <?php
-require_once __DIR__ . '/../../vendor/autoload.php';
+/**
+ * API-Endpunkt zur Nutzeranmeldung.
+ * 
+ * Erwartet JSON-Input mit "email" und "password".
+ * Prüft die Zugangsdaten, erstellt bei Erfolg ein JWT und gibt
+ * Benutzerinformationen mit dem Token zurück.
+ * 
+ * @uses \Firebase\JWT\JWT zur JWT-Erstellung
+ * 
+ * HTTP-Methoden:
+ * - OPTIONS: Preflight-Request wird direkt beendet
+ * - POST: Anmeldung mit JSON-Daten
+ * 
+ * @return void
+ */
 
-// CORS Header (Frontend-Adresse anpassen, falls nötig)
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+// Autoload von Composer laden
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 // Preflight-Request beenden
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -23,6 +35,7 @@ if (!isset($data['email']) || !isset($data['password'])) {
     exit;
 }
 
+// Datenbankverbindung und User-Model laden
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../../models/User.php';
 
@@ -45,7 +58,7 @@ if ($user && password_verify($data['password'], $user['password_hash'])) {
     // JWT erzeugen
     $jwt = \Firebase\JWT\JWT::encode($payload, $secret_key, 'HS256');
 
-    // Antwort mit token UND user_id
+    // Antwort mit Token und Benutzerinformationen
     echo json_encode([
         'success' => true,
         'token' => $jwt,

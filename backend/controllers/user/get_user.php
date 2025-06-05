@@ -1,6 +1,23 @@
 <?php
+/**
+ * API-Endpunkt zum Abrufen eines Benutzers anhand seiner ID.
+ *
+ * Unterstützt Preflight OPTIONS-Anfragen für CORS.
+ * Erwartet eine GET-Anfrage mit der Benutzer-ID als URL-Parameter 'id'.
+ * Gibt die Benutzer-ID und den Namen als JSON zurück, falls gefunden.
+ * Gibt Fehlercodes und Fehlermeldungen als JSON bei ungültiger ID, nicht gefundenem Benutzer oder Datenbankfehlern aus.
+ * 
+ * Beispiel:
+ *  GET /api/users/get_user.php?id=123
+ * 
+ * Antwort bei Erfolg:
+ *  { "id": 123, "name": "Max Mustermann" }
+ * 
+ * Antwort bei Fehler:
+ *  { "error": "Benutzer nicht gefunden" }
+ */
 
-// Preflight
+ // Preflight
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
@@ -33,3 +50,4 @@ try {
     http_response_code(500);
     echo json_encode(["error" => "Datenbankfehler: " . $e->getMessage()]);
 }
+?>
