@@ -1,7 +1,6 @@
 <?php
 // controllers/recipe/create.php
 
-header("Content-Type: application/json");
 
 require_once __DIR__ . '/../../middleware/auth_middleware.php';
 $user_id = authenticate();

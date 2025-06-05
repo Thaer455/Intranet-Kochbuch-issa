@@ -1,15 +1,6 @@
 <?php
 
-// Fehler anzeigen
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-// CORS Header erlauben
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 // Preflight-Anfrage direkt beantworten
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

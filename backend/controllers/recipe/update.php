@@ -1,9 +1,5 @@
 <?php
 
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: PUT, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 // Preflight-Anfrage direkt beantworten
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -42,7 +38,6 @@ if (!isset($data['title'], $data['ingredients'], $data['instructions'])) {
     exit;
 }
 
-// Zutaten sicherstellen als JSON-String, falls Array übergeben wurde
 $ingredients = $data['ingredients'];
 if (is_array($ingredients)) {
     $ingredients = json_encode($ingredients);
