@@ -6,63 +6,78 @@ Ein webbasiertes Intranet-Kochbuch für Auszubildende. Das Projekt besteht aus e
 ## 📁 Projektstruktur
 
 ```
-Intranet-Kochbuch-issa/
-├── frontend/                  ← React-Frontend (Vite + React)
+Intranet-Kochbuch-issa/Intranet-Kochbuch-issa/
+├── backend/
+│   ├── config/
+│   │   └── database.php                ← Datenbankverbindung
+│   ├── controllers/
+│   │   ├── auth/
+│   │   │   ├── login.php               ← Login-Endpunkt
+│   │   │   └── register.php            ← Registrierungs-Endpunkt
+│   │   ├── recipe/
+│   │   │   ├── create.php              ← Neues Rezept erstellen
+│   │   │   ├── read.php                ← Alle Rezepte abrufen
+│   │   │   ├── update.php              ← Rezept aktualisieren
+│   │   │   ├── delete.php              ← Rezept löschen
+│   │   │   └── upload.php              ← Bild hochladen
+│   │   ├── user/
+│   │   │   ├── get_user.php            ← Benutzerdaten abrufen
+│   │   │   └── profile.php             ← Profil bearbeiten
+│   ├── middleware/
+│   │   └── auth_middleware.php         ← JWT-Token Prüfung
+│   ├── models/
+│   │   ├── Recipe.php                  ← Rezept-Datenmodell
+│   │   └── User.php                    ← Benutzer-Datenmodell
+│   ├── .gitignore
+│   ├── .htaccess                       ← URL-Rewrite für /api/...
+│   ├── composer.json                   ← PHP Abhängigkeiten
+│   ├── composer.lock
+│   └── index.php                       ← API-Router
+
+├── frontend/
 │   ├── public/
-│   │   └── favicon.ico
+│   │   └── images/
+│   │       ├── carbonara.jpg
+│   │       ├── placeholder.jpg
+│   │       ├── android-chrome-192x192.png
+│   │       ├── android-chrome-512x512.png
+│   │       ├── apple-touch-icon.png
+│   │       ├── favicon-16x16.png
+│   │       ├── favicon-32x32.png
+│   │       ├── favicon.ico
+│   │       └── site.webmanifest
+│   │   └── about.txt
 │   ├── src/
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   ├── index.css
-│   │   ├── app.css
 │   │   ├── components/
 │   │   │   ├── Layout.jsx
 │   │   │   ├── Navbar.jsx
+│   │   │   ├── ProtectedRoute.jsx      ← Schützt Seiten vor nicht angemeldeten Benutzern
 │   │   │   └── RecipeCard.jsx
 │   │   ├── pages/
-│   │   │   ├── Home/
-│   │   │   │   └── Home.jsx
-│   │   │   ├── Login/
-│   │   │   │   └── Login.jsx
-│   │   │   ├── Register/
-│   │   │   │   └── Register.jsx
 │   │   │   ├── Recipes/
-│   │   │   │   ├── RecipeList.jsx
+│   │   │   │   ├── CreateRecipe.jsx
+│   │   │   │   ├── EditRecipe.jsx
 │   │   │   │   ├── RecipeDetail.jsx
-│   │   │   │   └── CreateRecipe.jsx
-│   │   │   └── Profile/
-│   │   │       └── Profile.jsx
-│   │   └── services/
-│   │       ├── auth.service.js
-│   │       └── recipe.service.js
-│   ├── assets/
-│   ├── .env
-│   └── package.json
-│
-├── backend/                   ← PHP-Backend (REST API)
-│   ├── config/
-│   │   └── database.php        ← Datenbankverbindung
-│   ├── controllers/
-│   │   ├── auth/
-│   │   │   ├── login.php
-│   │   │   └── register.php
-│   │   └── recipe/
-│   │       ├── create.php
-│   │       ├── read.php
-│   │       ├── update.php
-│   │       └── delete.php
-│   ├── middleware/
-│   │   └── auth_middleware.php  ← JWT-Token Prüfung
-│   ├── models/
-│   │   ├── User.php
-│   │   └── Recipe.php
-│   ├── vendor/
-│   │   └── autoload.php         ← Composer Dependencies (Firebase JWT etc.)
-│   ├── .htaccess                  ← URL-Rewrite für /api/...
-│   ├── index.php                  ← API-Router
-│   └── composer.json              ← PHP Abhängigkeiten
-│
-└── README.md
+│   │   │   │   └── RecipeList.jsx
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Profile.jsx
+│   │   │   └── Register.jsx
+│   │   ├── services/
+│   │   │   ├── auth.service.js         ← Authentifizierungsdienst
+│   │   │   └── recipe.service.js       ← Rezeptdienst
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .env                            ← API-URL definieren
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── vite.config.js
+│   └── README.md
 ```
 
 ## ✨ Features
