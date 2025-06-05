@@ -132,7 +132,7 @@ Konfigurieren Sie einen Webserver wie Apache oder Nginx auf das `backend/`-Verze
 
 In der `.env` Datei:
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_URL=http://fi1.mshome.net/Intranet-Kochbuch-issa/backend
 ```
 
 ### Backend
